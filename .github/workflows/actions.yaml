@@ -92,8 +92,7 @@ jobs:
         run: | 
           aws lambda invoke --function-name test-function-${{ matrix.input }} \
               --payload $(echo "{\"input\": \"${{ matrix.input }}\"}" | base64) \
-              --output json out \ 
-              --query 'StatusCode'
+              --output json out
           if grep -nq "200" out; then
             exit 1
           fi
