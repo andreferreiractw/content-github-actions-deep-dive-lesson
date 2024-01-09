@@ -90,11 +90,11 @@ jobs:
         run: sleep 10
       - name: Invoke test function
         run: | 
-          response=$(aws lambda invoke --function-name test-function-${{ matrix.input }} \
+          aws lambda invoke --function-name test-function-${{ matrix.input }} \
             --payload $(echo "{\"input\": \"${{ matrix.input }} \"}" | base64) \
-            --output json)
-          statusCode=$(echo "$response" | jq -r '.StatusCode')
-          if $statusCode != "200"; then
+            --output json out \ 
+            --query 'StatusCode'
+          if grep -nq "200" out; then
             exit 1
           fi
       - name: Wait 30 seconds  
