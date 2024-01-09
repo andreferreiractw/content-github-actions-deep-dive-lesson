@@ -91,8 +91,8 @@ jobs:
           for i in 1 2 3 4 5
           do
             state=$(aws lambda get-function --function-name test-function-${{ matrix.input }} --query 'Configuration.[State]')
-            if state != "Active"; then 
-              echo state
+            if ${state} != "Active"; then 
+              echo ${state}
             fi
           done
       - name: Invoke test function
