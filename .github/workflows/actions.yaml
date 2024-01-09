@@ -92,8 +92,10 @@ jobs:
         run: | 
           out=$(aws lambda invoke --function-name test-function-${{ matrix.input }} \
             --payload $(echo "{\"input\": \"${{ matrix.input }} \"}" | base64) \
-            --output json)
-          if ${{ fromJSON(out.StatusCode) }} != "200"; then
+            --output json \
+            --query 'StatusCode'))
+          statusCode=$(echo "$response" | jq -r '.StatusCode')
+          if $statusCode != "200"; then
             exit 1
           fi
       - name: Wait 30 seconds  
